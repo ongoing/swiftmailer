@@ -343,17 +343,17 @@ class Swift_Mime_Headers_MailboxHeader extends Swift_Mime_Headers_AbstractHeader
     }
 
     /**
-     * Throws an Exception if the address passed does not comply with RFC 2822.
+     * Throws an Exception if the address passed does not comply with custom regex
      *
      * @param string $address
      *
-     * @throws Swift_RfcComplianceException If invalid.
+     * @throws \Exception If invalid.
      */
     private function assertValidAddress($address)
     {
-        if (!$this->emailValidator->isValid($address, new RFCValidation())) {
-            throw new Swift_RfcComplianceException(
-                'Address in mailbox given ['.$address.'] does not comply with RFC 2822, 3.6.2.'
+        if (!preg_match('/^.+\@\S+\.\S+$/', $address)) {
+            throw new \Exception(
+                'Address in mailbox given ['.$address.'] does not comply with custom regex'
             );
         }
     }
